@@ -12,15 +12,24 @@ fn main() {
 
 fn part2(input: &str) -> i32 {
     let mut sum = 0;
+    let numbers = vec!["1","2","3","4","5","6","7","8","9","one","two","three","four","five","six","seven","eight","nine"]
 
     for line in input.lines() {
         let mut line_sum = 0;
         let mut left = 0;
         let mut right = 0;
         
-        match line {
-            ()
-        }
+        
+        for &number in &numbers {
+
+            if let Some(first_index) = line.find(&number) {
+                match left {
+                    0 => {left = &number, right = &number},
+                    _ => left = &number
+                }
+
+            }
+        }    
     }
     sum
 }
