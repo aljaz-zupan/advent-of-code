@@ -7,8 +7,8 @@ fn main() {
 }
 
 struct Number {
-    value: &str,
-    index: i16,
+    value: i32,
+    index: i32,
 }
 
 fn part2(input: &str) -> i32 {
@@ -34,15 +34,15 @@ fn part2(input: &str) -> i32 {
                 println!("first_index {}", first_index);
                 match left.value {
                     0 => {
-                        left = return_number(&number);
-                        right = return_number(&number)
+                        left = return_as_number(&number, &first_index);
+                        right = return_as_number(&number, )
                     }
-                    _ => left = return_number(&number),
+                    _ => left = return_as_number(&number),
                 }
             } else if let Some(last_index) = line.rfind(&number) {
                 println!("last_index {}", last_index);
                 match right.value {
-                    0 => right = return_number(&number),
+                    0 => right = return_as_number(&number),
                     _ => {}
                 }
             }
@@ -55,20 +55,23 @@ fn part2(input: &str) -> i32 {
     sum
 }
 
-fn return_number(number: &str) -> i32 {
-    let the_number = match number {
-        "1" | "one" => 1,
-        "2" | "two" => 2,
-        "3" | "three" => 3,
-        "4" | "four" => 4,
-        "5" | "five" => 5,
-        "6" | "six" => 6,
-        "7" | "seven" => 7,
-        "8" | "eight" => 8,
-        "9" | "nine" => 9,
-        _ => 0,
-    };
-    the_number
+fn return_as_number(number: &str, index: usize) -> Number {
+    let i32index = i32::try_from(index).expect("Index is too large to fit in an i32.");
+    Number {
+        value: match number {
+            "1" | "one" => 1,
+            "2" | "two" => 2,
+            "3" | "three" => 3,
+            "4" | "four" => 4,
+            "5" | "five" => 5,
+            "6" | "six" => 6,
+            "7" | "seven" => 7,
+            "8" | "eight" => 8,
+            "9" | "nine" => 9,
+            _ => 0,
+        },
+        index: i32index,
+    }
 }
 
 #[cfg(test)]
