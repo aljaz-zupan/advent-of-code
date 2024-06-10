@@ -31,32 +31,32 @@ fn part2(input: &str) -> i32 {
         for &number in &numbers {
             println!("Number: {}", &number);
             if let Some(first_index) = line.find(&number) {
+                let first_element = i32::try_from(first_index).expect("Number is to low or to high");
                 println!("first_index {}", first_index);
                 match left.value {
                     0 => {
-                        left = return_as_number(&number, &first_index);
-                        right = return_as_number(&number, )
+                        left = return_as_number(&number, &first_element);
+                        right = return_as_number(&number, &first_element )
                     }
-                    _ => left = return_as_number(&number),
+                    _ => left = return_as_number(&number, &first_element),
                 }
             } else if let Some(last_index) = line.rfind(&number) {
+                let last_element = i32::try_from(last_index).expect("Number is to low");
                 println!("last_index {}", last_index);
-                match right.value {
-                    0 => right = return_as_number(&number),
-                    _ => {}
+                if right.value == 0 {
+                    right = return_as_number(&number, &last_element);
                 }
             }
         }
-        println!("{} {} {}", &line, &left, &right);
-        let line_string = format!("{}{}", &left.to_string(), &right.to_string());
+        println!("{} {} {}", &line, &left.value, &right.value);
+        let line_string = format!("{}{}", &left.value.to_string(), &right.value.to_string());
         let line_sum: i32 = line_string.parse().unwrap();
         sum += line_sum
     }
     sum
 }
 
-fn return_as_number(number: &str, index: usize) -> Number {
-    let i32index = i32::try_from(index).expect("Index is too large to fit in an i32.");
+fn return_as_number(number: &str, index: &i32) -> Number {
     Number {
         value: match number {
             "1" | "one" => 1,
@@ -70,7 +70,7 @@ fn return_as_number(number: &str, index: usize) -> Number {
             "9" | "nine" => 9,
             _ => 0,
         },
-        index: i32index,
+        index: *index,
     }
 }
 
