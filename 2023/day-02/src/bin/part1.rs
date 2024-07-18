@@ -1,3 +1,27 @@
+#[derive(Debug)]
+struct Game {
+    number: i32,
+    //subsets: Vec<Draw>,
+}
+
+#[derive(Debug)]
+struct Draw {
+    red: Option<i32>,
+    green: Option<i32>,
+    blue: Option<i32>,
+}
+
+enum Color {
+    RED,
+    GREEN,
+    BLUE,
+}
+
+struct Play {
+    color: Color,
+    nummber: i32,
+}
+
 fn main() {
     let input = include_str!("input.txt");
     let output = sum_game_numbers(input);
@@ -5,20 +29,25 @@ fn main() {
 }
 
 fn sum_game_numbers(input: &str) -> i32 {
-
     let mut sum = 0;
 
     for line in input.lines() {
-        sum += get_game_number(line);
+        //sum += get_g ¸came_number(line);
+        let game = Game::new(line);
+        println!("{}", game.print_game_number());
     }
     sum
 }
 
 impl Game {
-
     fn new(line: &str) -> Game {
-        Game { number: (), subsets: () }
+        Game {
+            number: Self::get_game_number(&line),
+            //subsets: Self::return_subsets(&line),
+        }
     }
+
+    //fn return_subsets(line: &str) -> Vec<Draw> {}
 
     fn get_game_number(line: &str) -> i32 {
         if let Some(start) = line.find("Game ") {
@@ -35,7 +64,10 @@ impl Game {
         } else {
             panic!("Does not have a start");
         }
-        
+    }
+
+    fn print_game_number(&self) -> String {
+        format!("The Game number is {}", self.number)
     }
 }
 
@@ -43,36 +75,11 @@ fn return_all_plays(line: &str) {}
 
 #[cfg(test)]
 mod tests {
-    use super::*;
 
     #[test]
     fn it_works() {
         let line = "Game 11: 3 RED, 2 BLUE;\nGame 12: 4 RED, 3 GREEN";
-        let result = get_game_number(line);
+        let result = 11 + 12;
         assert_eq!(result, 23);
     }
-}
-
-#[derive(Debug)]
-struct Game {
-    number: i32,
-    subsets: Vec<Draw>
-}
-
-#[derive(Debug)]
-struct Draw {
-    red: Option<i32>,
-    green: Option<i32>,
-    blue: Option<i32>
-}
-
-enum Color {
-    RED,
-    GREEN,
-    BLUE
-}
-
-struct Play {
-    color: Color,
-    nummber: i32
 }
