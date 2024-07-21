@@ -1,7 +1,7 @@
 #[derive(Debug)]
 struct Game {
     number: i32,
-    //subsets: Vec<Draw>,
+    max_draw: Draw,
 }
 
 #[derive(Debug)]
@@ -17,11 +17,6 @@ enum Color {
     BLUE,
 }
 
-struct Play {
-    color: Color,
-    nummber: i32,
-}
-
 fn main() {
     let input = include_str!("input.txt");
     let output = sum_game_numbers(input);
@@ -33,7 +28,7 @@ fn sum_game_numbers(input: &str) -> i32 {
 
     for line in input.lines() {
         //sum += get_g ¸came_number(line);
-        let game = Game::new(line);
+        let mut game = Game::new(line);
         println!("{}", game.print_game_number());
     }
     sum
@@ -44,6 +39,7 @@ impl Game {
         Game {
             number: Self::get_game_number(&line),
             //subsets: Self::return_subsets(&line),
+            max_draw: Self::return_subsets(&line),
         }
     }
 
@@ -66,12 +62,19 @@ impl Game {
         }
     }
 
+    fn max_draw(line: &str) {
+        let lines = line.to_string().split("; ");
+
+        for draw_line in lines {
+            let colors = draw_line.split("; ");
+        }
+        return vec![];
+    }
+
     fn print_game_number(&self) -> String {
         format!("The Game number is {}", self.number)
     }
 }
-
-fn return_all_plays(line: &str) {}
 
 #[cfg(test)]
 mod tests {
