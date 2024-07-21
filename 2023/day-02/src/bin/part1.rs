@@ -67,8 +67,10 @@ impl Game {
 
         for draw_line in lines {
             let colors = draw_line.split("; ");
+
+            for color_string in colors {}
         }
-        return vec![];
+        //return vec![];
     }
 
     fn print_game_number(&self) -> String {
