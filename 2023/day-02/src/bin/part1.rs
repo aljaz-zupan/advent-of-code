@@ -1,7 +1,9 @@
 #[derive(Debug)]
 struct Game {
     number: i32,
-    max_draw: Draw,
+    red: i32,
+    green: i32,
+    blue: i32
 }
 
 #[derive(Debug)]
@@ -36,10 +38,12 @@ fn sum_game_numbers(input: &str) -> i32 {
 
 impl Game {
     fn new(line: &str) -> Game {
+        let (red, green, blue): Self::max_draw(&line);
         Game {
             number: Self::get_game_number(&line),
-            //subsets: Self::return_subsets(&line),
-        (red, green, blue): Self::max_draw(&line),
+            red,
+            green,
+            blue
         }
     }
 
@@ -76,15 +80,15 @@ impl Game {
     }
 
     fn return_color_and_number(color_string: &str) {
-        let parts = color_string.to_string().splitn(2,' ');
+        let mut parts = color_string.splitn(2, ' ');
 
         if let (Some(num_str), Some(color)) = (parts.next(), parts.next()) {
             match num_str.parse::<i32>() {
-                Ok(num) => Ok((num, color)),
-                Err(_) => Err("Failed to parse the number"),
+                Ok(num) => (num, color),
+                Err(_) => panic!("Failed to parse the number"),
             }
         } else {
-            println!("The input does not contain exactly two parts separated by ' '");
+            panic!("The input does not contain exactly two parts separated by ' '");
         }
     }
 
