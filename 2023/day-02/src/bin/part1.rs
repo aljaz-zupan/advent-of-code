@@ -39,7 +39,7 @@ impl Game {
         Game {
             number: Self::get_game_number(&line),
             //subsets: Self::return_subsets(&line),
-            max_draw: Self::return_subsets(&line),
+        (red, green, blue): Self::max_draw(&line),
         }
     }
 
@@ -63,14 +63,29 @@ impl Game {
     }
 
     fn max_draw(line: &str) {
-        let lines = line.to_string().split("; ");
+        let lines = line.split("; ");
 
         for draw_line in lines {
             let colors = draw_line.split("; ");
 
-            for color_string in colors {}
+            for color_string in colors {
+                (num: i32, color: &str) = Self::return_color_and_number(color_string);
+            }
         }
-        //return vec![];
+
+    }
+
+    fn return_color_and_number(color_string: &str) {
+        let parts = color_string.to_string().splitn(2,' ');
+
+        if let (Some(num_str), Some(color)) = (parts.next(), parts.next()) {
+            match num_str.parse::<i32>() {
+                Ok(num) => Ok((num, color)),
+                Err(_) => Err("Failed to parse the number"),
+            }
+        } else {
+            println!("The input does not contain exactly two parts separated by ' '");
+        }
     }
 
     fn print_game_number(&self) -> String {
