@@ -3,14 +3,13 @@ struct Game {
     number: i32,
     red: i32,
     green: i32,
-    blue: i32
+    blue: i32,
 }
 
-#[derive(Debug)]
-struct Draw {
-    red: Option<i32>,
-    green: Option<i32>,
-    blue: Option<i32>,
+struct MaxGame {
+    red: i32,
+    green: i32,
+    blue: i32,
 }
 
 enum Color {
@@ -18,6 +17,12 @@ enum Color {
     GREEN,
     BLUE,
 }
+
+const BAG_CONTAINS: MaxGame = MaxGame {
+    red: 12,
+    green: 13,
+    blue: 14,
+};
 
 fn main() {
     let input = include_str!("input.txt");
@@ -30,20 +35,20 @@ fn sum_game_numbers(input: &str) -> i32 {
 
     for line in input.lines() {
         //sum += get_g ¸came_number(line);
-        let mut game = Game::new(line);
+        let game = Game::new(&line);
         println!("{}", game.print_game_number());
+        game.max_draw(&line);
     }
     sum
 }
 
 impl Game {
     fn new(line: &str) -> Game {
-        let (red, green, blue): Self::max_draw(&line);
         Game {
             number: Self::get_game_number(&line),
-            red,
-            green,
-            blue
+            red: 0,
+            green: 0,
+            blue: 0,
         }
     }
 
@@ -66,23 +71,41 @@ impl Game {
         }
     }
 
-    fn max_draw(line: &str) {
+    fn max_draw(&self, line: &str) {
         let lines = line.split("; ");
 
         for draw_line in lines {
             let colors = draw_line.split("; ");
 
             for color_string in colors {
-                (num: i32, color: &str) = Self::return_color_and_number(color_string);
+                let (num, color) = Self::return_color_and_number(color_string);
+                println!("num: {}; color: {}", &num, &color)
+                /*match color {
+                "red" => {
+                    if (&self.red < &num) {
+                        &self.red = num
+                    }
+                }
+                "green" => {
+                    if (&self.green < &num) {
+                        &self.green = num
+                    }
+                }
+                "blue" => {
+                    if (&self.blue < &num) {
+                        &self.blue = num
+                    }
+                }
+                }*/
             }
         }
-
     }
 
-    fn return_color_and_number(color_string: &str) {
+    fn return_color_and_number(color_string: &str) -> (i32, &str) {
         let mut parts = color_string.splitn(2, ' ');
 
         if let (Some(num_str), Some(color)) = (parts.next(), parts.next()) {
+            println!("&num_str: {}", &num_str);
             match num_str.parse::<i32>() {
                 Ok(num) => (num, color),
                 Err(_) => panic!("Failed to parse the number"),
