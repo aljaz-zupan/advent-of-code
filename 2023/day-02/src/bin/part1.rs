@@ -35,7 +35,7 @@ fn sum_game_numbers(input: &str) -> i32 {
 
     for line in input.lines() {
         //sum += get_g ¸came_number(line);
-        let game = Game::new(&line);
+        let mut game = Game::new(&line);
         println!("{}", game.print_game_number());
         game.max_draw(&line);
     }
@@ -71,7 +71,7 @@ impl Game {
         }
     }
 
-    fn max_draw(&self, line: &str) {
+    fn max_draw(&mut self, line: &str) {
         let lines = line.split("; ");
 
         for draw_line in lines {
@@ -79,24 +79,25 @@ impl Game {
 
             for color_string in colors {
                 let (num, color) = Self::return_color_and_number(color_string);
-                println!("num: {}; color: {}", &num, &color)
-                /*match color {
-                "red" => {
-                    if (&self.red < &num) {
-                        &self.red = num
+                println!("num: {}; color: {}", &num, &color);
+                match color {
+                    "red" => {
+                        if self.red < num {
+                            self.red = num;
+                        }
                     }
-                }
-                "green" => {
-                    if (&self.green < &num) {
-                        &self.green = num
+                    "green" => {
+                        if self.green < num {
+                            self.green = num;
+                        }
                     }
-                }
-                "blue" => {
-                    if (&self.blue < &num) {
-                        &self.blue = num
+                    "blue" => {
+                        if self.blue < num {
+                            self.blue = num;
+                        }
                     }
+                    _ => panic!("Not a color"),
                 }
-                }*/
             }
         }
     }
