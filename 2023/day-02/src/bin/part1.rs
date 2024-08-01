@@ -75,28 +75,32 @@ impl Game {
         let lines = line.split("; ");
 
         for draw_line in lines {
-            let colors = draw_line.split("; ");
+            if let Some(end) = draw_line[0..].find(':') {
+                let colors = draw_line[end + 1..].split("; ");
+                dbg!(&colors);
 
-            for color_string in colors {
-                let (num, color) = Self::return_color_and_number(color_string);
-                println!("num: {}; color: {}", &num, &color);
-                match color {
-                    "red" => {
-                        if self.red < num {
-                            self.red = num;
+                for colors_string in colors {
+                    println!("color str: {}", &colors_string);
+                    let (num, color) = Self::return_color_and_number(colors_string.trim());
+                    println!("num: {}; color: {}", &num, &color);
+                    match color {
+                        "red" => {
+                            if self.red < num {
+                                self.red = num;
+                            }
                         }
-                    }
-                    "green" => {
-                        if self.green < num {
-                            self.green = num;
+                        "green" => {
+                            if self.green < num {
+                                self.green = num;
+                            }
                         }
-                    }
-                    "blue" => {
-                        if self.blue < num {
-                            self.blue = num;
+                        "blue" => {
+                            if self.blue < num {
+                                self.blue = num;
+                            }
                         }
+                        _ => panic!("Not a color"),
                     }
-                    _ => panic!("Not a color"),
                 }
             }
         }
@@ -106,8 +110,8 @@ impl Game {
         let mut parts = color_string.splitn(2, ' ');
 
         if let (Some(num_str), Some(color)) = (parts.next(), parts.next()) {
-            println!("&num_str: {}", &num_str);
-            match num_str.parse::<i32>() {
+            println!("&num_str: {}", &num_str.trim());
+            match num_str.trim().parse::<i32>() {
                 Ok(num) => (num, color),
                 Err(_) => panic!("Failed to parse the number"),
             }
@@ -126,7 +130,7 @@ mod tests {
 
     #[test]
     fn it_works() {
-        let line = "Game 11: 3 RED, 2 BLUE;\nGame 12: 4 RED, 3 GREEN";
+        let line = "Game 11: 3 RED, 2 BLUE;\nGame 12: 4 RED, 3 GREEN".to_string();
         let result = 11 + 12;
         assert_eq!(result, 23);
     }
