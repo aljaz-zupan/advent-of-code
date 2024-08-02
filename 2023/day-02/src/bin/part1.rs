@@ -1,3 +1,5 @@
+use std::char::ToLowercase;
+
 #[derive(Debug)]
 struct Game {
     number: i32,
@@ -38,6 +40,7 @@ fn sum_game_numbers(input: &str) -> i32 {
         let mut game = Game::new(&line);
         println!("{}", game.print_game_number());
         game.max_draw(&line);
+        println!("Game: {:?}", game)
     }
     sum
 }
@@ -76,30 +79,33 @@ impl Game {
 
         for draw_line in lines {
             if let Some(end) = draw_line[0..].find(':') {
-                let colors = draw_line[end + 1..].split("; ");
-                dbg!(&colors);
+                let draws = draw_line[end + 1..].split("; ");
+                println!("draw: {}", &draw_line);
 
-                for colors_string in colors {
-                    println!("color str: {}", &colors_string);
-                    let (num, color) = Self::return_color_and_number(colors_string.trim());
-                    println!("num: {}; color: {}", &num, &color);
-                    match color {
-                        "red" => {
-                            if self.red < num {
-                                self.red = num;
+                for draw in draws {
+                    println!("color str: {}", &draw);
+                    let draw_color = draw.split(',');
+                    for color in draw_color {
+                        let (num, color_name) = Self::return_color_and_number(color.trim());
+                        println!("num: {}; color: {};", &num, &color_name);
+                        match color_name {
+                            "red" => {
+                                if self.red < num {
+                                    self.red = num;
+                                }
                             }
-                        }
-                        "green" => {
-                            if self.green < num {
-                                self.green = num;
+                            "green" => {
+                                if self.green < num {
+                                    self.green = num;
+                                }
                             }
-                        }
-                        "blue" => {
-                            if self.blue < num {
-                                self.blue = num;
+                            "blue" => {
+                                if self.blue < num {
+                                    self.blue = num;
+                                }
                             }
+                            _ => panic!("Not a color"),
                         }
-                        _ => panic!("Not a color"),
                     }
                 }
             }
@@ -110,7 +116,6 @@ impl Game {
         let mut parts = color_string.splitn(2, ' ');
 
         if let (Some(num_str), Some(color)) = (parts.next(), parts.next()) {
-            println!("&num_str: {}", &num_str.trim());
             match num_str.trim().parse::<i32>() {
                 Ok(num) => (num, color),
                 Err(_) => panic!("Failed to parse the number"),
