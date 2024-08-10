@@ -40,9 +40,7 @@ fn sum_game_numbers(input: &str) -> i32 {
         let mut game = Game::new(&line);
         //println!("{}", game.print_game_number());
         game.max_draw(&line);
-        if (game.is_within_max(BAG_CONTAINS)) {
-            sum = sum + game.number
-        }
+        sum += game.power_of_draw()
         //println!("Game: {:?}", game)
     }
     sum
@@ -111,6 +109,10 @@ impl Game {
                 }
             }
         }
+    }
+
+    fn power_of_draw(&self) -> i32 {
+        self.red * self.green * self.blue
     }
 
     fn is_within_max(&self, max: MaxGame) -> bool {
