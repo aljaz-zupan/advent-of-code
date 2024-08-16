@@ -1,4 +1,4 @@
-use std::i32;
+use std::iter::Enumerate;
 
 struct Symbol_neighbours {
     symbol: char,
@@ -9,19 +9,28 @@ struct Symbol_neighbours {
 }
 
 fn main() {
-    let input = include_str!("input.txt");
-    let symbols: &[_] = &['+', '*', '%', '/', '@', '#', '-', '$', '&', '='];
+    let input: &str = include_str!("input.txt");
+    let symbols: Vec<char> = vec!['+', '*', '%', '/', '@', '#', '-', '$', '&', '='];
 
-    let mut file = input.lines().into_iter().enumerate();
+    let file = input.lines().enumerate();
+    let max: i32 = i32::try_from(file.clone().count()).unwrap() - 1;
 
     for (line_index, line) in file {
-        let index = i32::try_from(line_index).unwrap();
-        let max = i32::try_from(file.copy.count()).unwrap() - 1;
+        print!("{} ->", line_index);
+        //let index = i32::try_from(line_index).unwrap();
+
         // If first line then just continue since there are no symbols on firs line
-        if (index == 0 || index == max) {
+        if line_index == usize::try_from(0).unwrap() || line_index == usize::try_from(max).unwrap()
+        {
             continue;
         } else {
-            println!("{}", &line);
+            //println!("{}: {}", &line_index, &line);
+            for (char_index, char) in line.chars().enumerate() {
+                if (symbols.contains(&char)) {
+                    print!("{}[{}], ", char, char_index);
+                }
+            }
         }
+        println!("");
     }
 }
