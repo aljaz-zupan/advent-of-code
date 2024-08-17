@@ -1,3 +1,5 @@
+use std::{iter::Enumerate, str::Lines};
+
 struct SymbolNeighbours {
     symbol: char,
     symbol_index: usize,
@@ -10,24 +12,22 @@ fn main() {
     let input: &str = include_str!("input.txt");
     let symbols: Vec<char> = vec!['+', '*', '%', '/', '@', '#', '-', '$', '&', '='];
 
-    let mut file = input.lines().enumerate();
-    let max: i32 = i32::try_from(file.clone().count()).unwrap() - 1;
+    let lines: Vec<&str> = input.lines().collect();
+    let max = lines.len() - 1;
 
-    for (line_index, line) in file {
+    for (line_index, line) in lines.iter().enumerate() {
         //let index = i32::try_from(line_index).unwrap();
 
         // If first line then just continue since there are no symbols on firs line
-        if (line_index == usize::try_from(0).unwrap()
-            || line_index == usize::try_from(max).unwrap())
-        {
+        if line_index == 0 || line_index == max {
             continue;
         } else {
             print!("{} ->", &line_index);
             //println!("{}: {}", &line_index, &line);
             for (char_index, char) in line.chars().enumerate() {
                 if symbols.contains(&char) {
-                    let top = &file.clone().nth(&line_index - 1);
-                    let bottom = &file.clone().nth(&line_index + 1);
+                    let top = lines.get(line_index - 1);
+                    let bottom = lines.get(line_index + 1);
                     print!(
                         "{}[{}], top: {:?}, bottom:{:?} , ",
                         char, char_index, top, bottom
