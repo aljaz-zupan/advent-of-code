@@ -49,6 +49,8 @@ fn main() {
 }
 
 fn return_numbers(index: usize, line: &str, top: &str, bottom: &str) -> Option<Vec<i32>> {
+    let numbers: Vec<i32> = vec![0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
     let middle_vec: Vec<char> = line.chars().collect();
     let top_vec: Vec<char> = top.chars().collect();
     let bottom_vec: Vec<char> = top.chars().collect();
