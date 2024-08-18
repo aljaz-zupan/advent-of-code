@@ -26,8 +26,11 @@ fn main() {
             //println!("{}: {}", &line_index, &line);
             for (char_index, char) in line.chars().enumerate() {
                 if symbols.contains(&char) {
-                    let top = lines.get(line_index - 1);
-                    let bottom = lines.get(line_index + 1);
+                    let top_line = lines.get(line_index - 1);
+                    let bottom_line = lines.get(line_index + 1);
+
+                    let m
+
                     print!(
                         "{}[{}], top: {:?}, bottom:{:?} , ",
                         char, char_index, top, bottom
@@ -39,6 +42,6 @@ fn main() {
     }
 }
 
-/*fn top_line(line: &str, index: usize): Option<Vec<i32>> {
+fn get_numbers(index: usize, line: &str) : Option<Vec<i32>> {
 
-}*/
+}
