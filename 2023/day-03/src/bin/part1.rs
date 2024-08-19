@@ -58,4 +58,4 @@ fn return_numbers(index: usize, line: &str, top: &str, bottom: &str) -> Option<V
     Some(vec![1, 2, 3])
 }
 
-fn find_number(line: &str, index: usize, direction: Direction) {}
+fn find_numbers(line: &str, index: usize, direction: Direction) {}
