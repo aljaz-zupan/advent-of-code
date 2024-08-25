@@ -1,3 +1,5 @@
+use std::f32::consts::E;
+
 struct SymbolNeighbours {
     symbol: char,
     symbol_index: usize,
@@ -34,12 +36,10 @@ fn main() {
                     let top_line = lines.get(line_index - 1).unwrap();
                     let bottom_line = lines.get(line_index + 1).unwrap();
 
-                    if Some(numbers) = return_numbers(char_index, line, top_line, bottom_line) {
-
-                        /*print!(
-                        "{}[{}], top: {:?}, bottom:{:?} , ",
-                        char, char_index, top, bottom
-                        );*/
+                    if let Some(numbers) =
+                        return_numbers(char_index, line, top_line, bottom_line, &symbols)
+                    {
+                        println!("Numbers: {:?}", numbers);
                     }
                 }
             }
@@ -48,14 +48,39 @@ fn main() {
     }
 }
 
-fn return_numbers(index: usize, line: &str, top: &str, bottom: &str) -> Option<Vec<i32>> {
-    let numbers: Vec<i32> = vec![0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+fn return_numbers(
+    index: usize,
+    line: &str,
+    top: &str,
+    bottom: &str,
+    symbols: &Vec<char>,
+) -> Option<Vec<i32>> {
+    let top_numbers = find_numbers(top, index);
+    let bottom_numbers = find_numbers(bottom, index);
+    let middle_numbers = find_numbers(line, index);
 
-    let middle_vec: Vec<char> = line.chars().collect();
-    let top_vec: Vec<char> = top.chars().collect();
-    let bottom_vec: Vec<char> = top.chars().collect();
-
-    Some(vec![1, 2, 3])
+    dbg!(top_numbers, bottom_numbers, middle_numbers);
+    return Some(vec![22, 341, 452]);
 }
 
-fn find_numbers(line: &str, index: usize, direction: Direction) {}
+fn find_numbers(string: &str, index: usize) -> Option<Vec<i32>> {
+    let numbers = vec!['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    let string: String = string.to_string();
+
+    let mut num: Vec<i32> = vec![];
+    let mut temp: Vec<char> = vec![];
+
+    for (index, char) in string.chars().enumerate() {
+        if numbers.contains(&char) {
+            temp.push(char.clone());
+        } else {
+            if !temp.is_empty() {
+                let collection: String = temp.iter().collect();
+                num.push(collection.parse::<i32>().unwrap());
+            }
+            temp.clear();
+        }
+    }
+
+    Some(num)
+}
