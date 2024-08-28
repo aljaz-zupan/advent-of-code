@@ -1,5 +1,3 @@
-use std::f32::consts::E;
-
 struct SymbolNeighbours {
     symbol: char,
     symbol_index: usize,
@@ -8,9 +6,18 @@ struct SymbolNeighbours {
     previous_line: Option<String>,
 }
 
-enum Direction {
-    Left,
-    Right,
+struct LineNumber {
+    string: String,
+    index_range: Vec<usize>,
+}
+
+impl LineNumber {
+    fn new(self, numb: String, range: Vec<usize>) -> {
+        return LineNumber {
+            string: numb,
+            index_range: range
+        }
+    }
 }
 
 fn main() {
@@ -67,7 +74,7 @@ fn find_numbers(string: &str, index: usize) -> Option<Vec<i32>> {
     let numbers = vec!['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     let string: String = string.to_string();
 
-    let mut num: Vec<i32> = vec![];
+    let mut num: Vec<LineNumber> = vec![];
     let mut temp: Vec<char> = vec![];
 
     for (index, char) in string.chars().enumerate() {
