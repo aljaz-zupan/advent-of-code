@@ -12,11 +12,11 @@ struct LineNumber {
 }
 
 impl LineNumber {
-    fn new(self, numb: String, range: Vec<usize>) -> {
+    fn new(numb: String, range: Vec<usize>) -> LineNumber {
         return LineNumber {
             string: numb,
-            index_range: range
-        }
+            index_range: range,
+        };
     }
 }
 
@@ -83,7 +83,8 @@ fn find_numbers(string: &str, index: usize) -> Option<Vec<i32>> {
         } else {
             if !temp.is_empty() {
                 let collection: String = temp.iter().collect();
-                num.push(collection.parse::<i32>().unwrap());
+                let temp_line_num = LineNumber::new(collection.parse::<i32>().unwrap(), index);
+                num.push(temp_line_num);
             }
             temp.clear();
         }
