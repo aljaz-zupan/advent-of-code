@@ -6,7 +6,7 @@ struct SymbolNeighbours {
     previous_line: Option<String>,
 }
 
-#[derive(Copy, Clone)]
+#[derive(Debug)]
 struct LineNumber {
     string: i32,
     index_range: Vec<usize>,
@@ -16,7 +16,7 @@ impl LineNumber {
     fn new(numb: i32, range: &Vec<usize>) -> LineNumber {
         return LineNumber {
             string: numb,
-            index_range: range,
+            index_range: range.to_vec(),
         };
     }
 }
@@ -91,8 +91,18 @@ fn find_numbers(string: &str, index: usize) -> Option<Vec<LineNumber>> {
                 num.push(temp_line_num);
             }
             temp.clear();
+            temp_index.clear();
         }
     }
 
     Some(num)
+}
+
+fn neighbour_numbers(
+    numbers: Vec<LineNumber>,
+    index: usize,
+    symbolLine: bool,
+) -> Option<Vec<LineNumber>> {
+    let range = [index - 1, index, index + 1];
+    let found = numbers.iter().find(|&&e| e.index_range.contains(&index));
 }
