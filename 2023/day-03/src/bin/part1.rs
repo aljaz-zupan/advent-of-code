@@ -6,7 +6,7 @@ struct SymbolNeighbours {
     previous_line: Option<String>,
 }
 
-#[derive(Copy, Clone)]
+#[derive(Clone, Debug)]
 struct LineNumber {
     string: i32,
     index_range: Vec<usize>,
@@ -16,7 +16,7 @@ impl LineNumber {
     fn new(numb: i32, range: &Vec<usize>) -> LineNumber {
         return LineNumber {
             string: numb,
-            index_range: range,
+            index_range: range.to_vec(),
         };
     }
 }
@@ -90,6 +90,7 @@ fn find_numbers(string: &str, index: usize) -> Option<Vec<LineNumber>> {
                     LineNumber::new(collection.parse::<i32>().unwrap(), &temp_index);
                 num.push(temp_line_num);
             }
+            temp_index.clear();
             temp.clear();
         }
     }
