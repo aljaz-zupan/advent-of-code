@@ -62,13 +62,19 @@ fn return_numbers(
     top: &str,
     bottom: &str,
     symbols: &Vec<char>,
-) -> Option<Vec<i32>> {
-    let top_numbers = find_numbers(top, index).unwrap();
+) -> Option<Vec<LineNumber>> {
+    let mut top_numbers = find_numbers(top, index).unwrap();
     let bottom_numbers = find_numbers(bottom, index).unwrap();
     let middle_numbers = find_numbers(line, index).unwrap();
 
-    dbg!(top_numbers, bottom_numbers, middle_numbers);
-    return Some(vec![22, 341, 452]);
+    let all_numbers: Vec<LineNumber> = top_numbers
+        .into_iter()
+        .chain(middle_numbers.into_iter())
+        .chain(bottom_numbers.into_iter())
+        .collect();
+
+    //dbg!(top_numbers, bottom_numbers, middle_numbers);
+    return Some(all_numbers);
 }
 
 fn find_numbers(string: &str, index: usize) -> Option<Vec<LineNumber>> {
@@ -88,7 +94,17 @@ fn find_numbers(string: &str, index: usize) -> Option<Vec<LineNumber>> {
                 let collection: String = temp.iter().collect();
                 let temp_line_num =
                     LineNumber::new(collection.parse::<i32>().unwrap(), &temp_index);
-                num.push(temp_line_num);
+                let left_index = index - 1;
+                let right_index = index + 1;
+
+                /* If any of the index number is in the range if the symbol index then push to numbers */
+                if temp_line_num
+                    .index_range
+                    .iter()
+                    .any(|&i| i + 1 <= left_index && i - 1 >= right_index)
+                {
+                    num.push(temp_line_num);
+                }
             }
             temp_index.clear();
             temp.clear();
