@@ -1,10 +1,8 @@
-struct Digit {
-    indexes: Vec<usize>,    // Current index of the last found char of a digit
-    digit_string: Vec<char>, // Add char to string if is next to previus char    // Current dirrection of itterator
-}
-
+#![allow(unused)]
 fn main() {
-    let numbers = vec![0,1, 2, 3, 4, 5, 6, 7, 8, 9];
+    let a = [1, 2, 3];
 
-    if number.any
+    assert!(a.iter().any(|&x| x > 0));
+
+    assert!(a.iter().any(|&x| x > 5));
 }

@@ -1,11 +1,3 @@
-struct SymbolNeighbours {
-    symbol: char,
-    symbol_index: usize,
-    current_line: String,
-    next_line: Option<String>,
-    previous_line: Option<String>,
-}
-
 #[derive(Clone, Debug)]
 struct LineNumber {
     string: i32,
@@ -101,7 +93,7 @@ fn find_numbers(string: &str, index: usize) -> Option<Vec<LineNumber>> {
                 if temp_line_num
                     .index_range
                     .iter()
-                    .any(|&i| i + 1 <= left_index && i - 1 >= right_index)
+                    .any(|&i| i + 1 <= left_index && i + 1 >= right_index)
                 {
                     num.push(temp_line_num);
                 }
