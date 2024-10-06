@@ -36,26 +36,24 @@ fn main() {
                     let top_line = lines.get(line_index - 1).unwrap();
                     let bottom_line = lines.get(line_index + 1).unwrap();
 
-                    if let Some(numbers) =
-                        return_numbers(char_index, line, top_line, bottom_line, &symbols)
-                    {
+                    if let Some(numbers) = return_numbers(char_index, line, top_line, bottom_line) {
                         println!("Numbers: {:?}", numbers);
+
+                        for number in numbers {
+                            sum = sum + number.string;
+                        }
                     }
                 }
             }
         }
         println!("");
     }
+
+    println!("sum: {}", sum);
 }
 
-fn return_numbers(
-    index: usize,
-    line: &str,
-    top: &str,
-    bottom: &str,
-    symbols: &Vec<char>,
-) -> Option<Vec<LineNumber>> {
-    let mut top_numbers = find_numbers(top, index).unwrap();
+fn return_numbers(index: usize, line: &str, top: &str, bottom: &str) -> Option<Vec<LineNumber>> {
+    let top_numbers = find_numbers(top, index).unwrap();
     let bottom_numbers = find_numbers(bottom, index).unwrap();
     let middle_numbers = find_numbers(line, index).unwrap();
 
@@ -77,10 +75,10 @@ fn find_numbers(string: &str, index: usize) -> Option<Vec<LineNumber>> {
     let mut temp: Vec<char> = vec![];
     let mut temp_index: Vec<usize> = vec![];
 
-    for (index, char) in string.chars().enumerate() {
+    for (ci, char) in string.chars().enumerate() {
         if numbers.contains(&char) {
             temp.push(char.clone());
-            temp_index.push(index);
+            temp_index.push(ci);
         } else {
             if !temp.is_empty() {
                 let collection: String = temp.iter().collect();
@@ -93,7 +91,7 @@ fn find_numbers(string: &str, index: usize) -> Option<Vec<LineNumber>> {
                 if temp_line_num
                     .index_range
                     .iter()
-                    .any(|&i| i + 1 <= left_index && i + 1 >= right_index)
+                    .any(|&i| i >= left_index && i <= right_index)
                 {
                     num.push(temp_line_num);
                 }
