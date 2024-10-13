@@ -1,15 +1,23 @@
-#[derive(Clone, Debug)]
+use std::collections::HashMap;
+
+#[derive(Clone, Debug, PartialEq, Eq)]
 struct LineNumber {
+    id: i32,
     string: i32,
     index_range: Vec<usize>,
 }
 
 impl LineNumber {
-    fn new(numb: i32, range: &Vec<usize>) -> LineNumber {
+    fn new(line_index: i32, numb: i32, range: &Vec<usize>) -> LineNumber {
         return LineNumber {
+            id: line_index,
             string: numb,
             index_range: range.to_vec(),
         };
+    }
+
+    fn generate_id(index, index_range) {
+
     }
 }
 
@@ -18,6 +26,7 @@ fn main() {
     let symbols: Vec<char> = vec!['+', '*', '%', '/', '@', '#', '-', '$', '&', '='];
 
     let mut sum = 0;
+    let mut lineNumbers: HashMap<LineNumber>;
 
     let lines: Vec<&str> = input.lines().collect();
     let max = lines.len() - 1;
@@ -36,11 +45,14 @@ fn main() {
                     let top_line = lines.get(line_index - 1).unwrap();
                     let bottom_line = lines.get(line_index + 1).unwrap();
 
-                    if let Some(numbers) = return_numbers(char_index, line, top_line, bottom_line) {
+                    if let Some(numbers) =
+                        return_numbers(char_index, &line_index, line, top_line, bottom_line)
+                    {
                         println!("Numbers: {:?}", numbers);
 
                         for number in numbers {
                             sum = sum + number.string;
+                            lineNumbers.append(other);
                         }
                     }
                 }
@@ -52,10 +64,16 @@ fn main() {
     println!("sum: {}", sum);
 }
 
-fn return_numbers(index: usize, line: &str, top: &str, bottom: &str) -> Option<Vec<LineNumber>> {
-    let top_numbers = find_numbers(top, index).unwrap();
-    let bottom_numbers = find_numbers(bottom, index).unwrap();
-    let middle_numbers = find_numbers(line, index).unwrap();
+fn return_numbers(
+    index: usize,
+    line_index: &usize,
+    line: &str,
+    top: &str,
+    bottom: &str,
+) -> Option<Vec<LineNumber>> {
+    let top_numbers = find_numbers(top, index, &line_index - 1 ).unwrap();
+    let bottom_numbers = find_numbers(bottom, index, &line_index + 1).unwrap();
+    let middle_numbers = find_numbers(line, index, &line_index).unwrap();
 
     let all_numbers: Vec<LineNumber> = top_numbers
         .into_iter()
@@ -67,7 +85,7 @@ fn return_numbers(index: usize, line: &str, top: &str, bottom: &str) -> Option<V
     return Some(all_numbers);
 }
 
-fn find_numbers(string: &str, index: usize) -> Option<Vec<LineNumber>> {
+fn find_numbers(string: &str, index: usize, line_index: &usize) -> Option<Vec<LineNumber>> {
     let numbers = vec!['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     let string: String = string.to_string();
 
@@ -83,7 +101,7 @@ fn find_numbers(string: &str, index: usize) -> Option<Vec<LineNumber>> {
             if !temp.is_empty() {
                 let collection: String = temp.iter().collect();
                 let temp_line_num =
-                    LineNumber::new(collection.parse::<i32>().unwrap(), &temp_index);
+                    LineNumber::new(line_index, collection.parse::<i32>().unwrap(), &temp_index);
                 let left_index = index - 1;
                 let right_index = index + 1;
 
