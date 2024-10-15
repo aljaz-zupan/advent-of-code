@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 struct LineNumber {
-    id: i32,
+    id: String,
     string: i32,
     index_range: Vec<usize>,
 }
@@ -10,14 +10,15 @@ struct LineNumber {
 impl LineNumber {
     fn new(line_index: i32, numb: i32, range: &Vec<usize>) -> LineNumber {
         return LineNumber {
-            id: line_index,
+            id: Self::generate_id(line_index, &numb),
             string: numb,
             index_range: range.to_vec(),
         };
     }
 
-    fn generate_id(index, index_range) {
-
+    fn generate_id(index: i32, index_range: &i32) -> String {
+        let id: String = format!("{}-{}", index, index_range).to_string();
+        id
     }
 }
 
@@ -26,7 +27,7 @@ fn main() {
     let symbols: Vec<char> = vec!['+', '*', '%', '/', '@', '#', '-', '$', '&', '='];
 
     let mut sum = 0;
-    let mut lineNumbers: HashMap<LineNumber>;
+    let mut line_numbers: Vec<LineNumber>;
 
     let lines: Vec<&str> = input.lines().collect();
     let max = lines.len() - 1;
@@ -52,7 +53,7 @@ fn main() {
 
                         for number in numbers {
                             sum = sum + number.string;
-                            lineNumbers.append(other);
+                            line_numbers.append(other);
                         }
                     }
                 }
@@ -71,7 +72,7 @@ fn return_numbers(
     top: &str,
     bottom: &str,
 ) -> Option<Vec<LineNumber>> {
-    let top_numbers = find_numbers(top, index, &line_index - 1 ).unwrap();
+    let top_numbers = find_numbers(top, index, &line_index - 1).unwrap();
     let bottom_numbers = find_numbers(bottom, index, &line_index + 1).unwrap();
     let middle_numbers = find_numbers(line, index, &line_index).unwrap();
 
