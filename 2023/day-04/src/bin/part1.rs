@@ -8,4 +8,5 @@ fn main() {
         let chosen_numbers: Vec<&str> = line_numbers[0].split(' ').collect();
         let card_numbers: Vec<&str> = line_numbers[1].split(' ').collect();
     });
+    println!("sdsas");
 }
