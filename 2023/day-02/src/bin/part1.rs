@@ -1,5 +1,3 @@
-use std::char::ToLowercase;
-
 #[derive(Debug)]
 struct Game {
     number: i32,
@@ -12,12 +10,6 @@ struct MaxGame {
     red: i32,
     green: i32,
     blue: i32,
-}
-
-enum Color {
-    RED,
-    GREEN,
-    BLUE,
 }
 
 const BAG_CONTAINS: MaxGame = MaxGame {
@@ -40,7 +32,7 @@ fn sum_game_numbers(input: &str) -> i32 {
         let mut game = Game::new(&line);
         //println!("{}", game.print_game_number());
         game.max_draw(&line);
-        if (game.is_within_max(BAG_CONTAINS)) {
+        if game.is_within_max(BAG_CONTAINS) {
             sum = sum + game.number
         }
         //println!("Game: {:?}", game)
@@ -129,10 +121,6 @@ impl Game {
             panic!("The input does not contain exactly two parts separated by ' '");
         }
     }
-
-    fn print_game_number(&self) -> String {
-        format!("The Game number is {}", self.number)
-    }
 }
 
 #[cfg(test)]
@@ -140,7 +128,6 @@ mod tests {
 
     #[test]
     fn it_works() {
-        let line = "Game 11: 3 RED, 2 BLUE;\nGame 12: 4 RED, 3 GREEN".to_string();
         let result = 11 + 12;
         assert_eq!(result, 23);
     }

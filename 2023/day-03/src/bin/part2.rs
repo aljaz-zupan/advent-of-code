@@ -1,7 +1,7 @@
 #[derive(Clone, Debug, PartialEq, Eq)]
 struct LineNumber {
     id: String,
-    string: i32,
+    number: i32,
     index_range: Vec<usize>,
 }
 
@@ -10,7 +10,7 @@ impl LineNumber {
         let range_string = range.into_iter().map(|n| n.to_string()).collect::<String>();
         return LineNumber {
             id: Self::generate_id(line_index, &numb, range_string),
-            string: numb,
+            number: numb,
             index_range: range.to_vec(),
         };
     }
@@ -23,10 +23,10 @@ impl LineNumber {
 
 fn main() {
     let input: &str = include_str!("input.txt");
-    let symbols: Vec<char> = vec!['+', '*', '%', '/', '@', '#', '-', '$', '&', '='];
+    let symbols: Vec<char> = vec!['*'];
 
     let mut sum = 0;
-    let mut line_numbers: Vec<LineNumber> = vec![];
+    //let mut line_numbers: Vec<LineNumber> = vec![];
 
     let lines: Vec<&str> = input.lines().collect();
     let max = lines.len() - 1;
@@ -39,6 +39,7 @@ fn main() {
             continue;
         } else {
             for (char_index, char) in line.chars().enumerate() {
+                let mut gear_sum: i32 = 0;
                 if symbols.contains(&char) {
                     let top_line = lines.get((line_index_i32 - 1) as usize).unwrap();
                     let bottom_line = lines.get((line_index_i32 + 1) as usize).unwrap();
@@ -46,23 +47,28 @@ fn main() {
                     if let Some(numbers) =
                         return_numbers(char_index, line_index_i32, line, top_line, bottom_line)
                     {
-                        for number in numbers {
-                            sum = sum + number.string;
-                            if !line_numbers.iter().any(|num| num.id == number.id) {
-                                line_numbers.push(number);
-                            } else {
-                                println!("Already exsists: {:?}", number)
-                            }
+                        if numbers.iter().len() == 2 {
+                            print!("Numbers: {:?}", numbers);
+                            let char_sum: i32 = numbers
+                                .iter()
+                                .map(|nu| nu.number)
+                                .reduce(|acc, num| acc * num)
+                                .unwrap_or(0);
+                            gear_sum = char_sum;
+                            print!(" Gear sum: {}", &char_sum)
                         }
                     }
                 } else {
                     continue;
                 }
+                print!(" Before sum: {}", sum);
+                sum += gear_sum;
+                println!(" Sum: {}", sum);
             }
         }
     }
 
-    println!("sum: {}", sum);
+    println!(" sum: {}", sum);
 }
 
 fn return_numbers(
